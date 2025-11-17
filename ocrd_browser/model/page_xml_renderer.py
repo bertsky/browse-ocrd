@@ -333,6 +333,8 @@ class ArrowOperation(Operation):
         d = self.p1[0] - self.p0[0], self.p1[1] - self.p0[1]
         left = d[0] * c - d[1] * s, d[0] * s + d[1] * c
         right = d[0] * c + d[1] * s, -d[0] * s + d[1] * c
+        if d[0] == 0 and d[1] == 0:
+            return
         lf = self.size / (d[0] ** 2 + d[1] ** 2) ** 0.5
 
         # Draw arrow shaft
