@@ -57,7 +57,9 @@ def main() -> None:
     if PROFILER:
         GLib.idle_add(startup_time)
     from ocrd_utils import initLogging
+    import logging
     initLogging()
+    logging.getLogger('ocrd').setLevel(logging.DEBUG)
     from ocrd_browser.application import OcrdBrowserApplication
     install_excepthook()
     app = OcrdBrowserApplication()
