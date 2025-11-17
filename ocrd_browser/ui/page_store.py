@@ -7,7 +7,7 @@ from enum import IntEnum, auto
 
 from ..util.image import cv_to_pixbuf, cv_scale
 from ..model import Document
-from ..util.config import Settings
+from ..util.config import SettingsFactory
 from .icon_store import LazyLoadingListStore, RowResult
 
 import cv2
@@ -70,7 +70,7 @@ class PageListStore(LazyLoadingListStore):
         # TODO: make file_group selectable, see https://github.com/hnesk/browse-ocrd/issues/7#issuecomment-707851109
         self.clear()
         self.document = document
-        self.file_group = document.get_default_image_group(Settings.get().file_groups.preferred_images)
+        self.file_group = document.get_default_image_group(SettingsFactory.settings().file_groups.preferred_images)
         self.files = document.get_image_files(self.file_group, allow_download=False)
         for page_id, file in self.files.items():
             self.add_file(page_id, file)
