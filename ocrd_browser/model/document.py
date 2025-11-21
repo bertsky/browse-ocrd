@@ -307,11 +307,17 @@ class Document:
         return Page(self, page_id, file_group)
 
     def files_for_page_id(self, page_id: str, file_group: str = None, mimetype: str = None) -> List[OcrdFile]:
+        log = getLogger('ocrd_browser.model.document.Document.files_for_page_id')
         with pushd_popd(self.workspace.directory):
             files: List[OcrdFile] = self.workspace.mets.find_files(fileGrp=file_group, pageId=page_id,
                                                                    mimetype=mimetype)
-            files = [self.workspace.download_file(file) for file in files]
-            return files
+            def try_download(file):
+                try:
+                    return self.workspace.download_file(file)
+                except FileNotFoundError as e:
+                    log.warning(e)
+                    return None
+            return list(filter(None, [try_download(file) for file in files]))
 
     def page_for_file(self, page_file: OcrdFile) -> PcGtsType:
         # cd and silence Warning: Value "ocrd-cis-word-alignment" ... does not match xsd enumeration restriction on TextDataTypeSimpleType
