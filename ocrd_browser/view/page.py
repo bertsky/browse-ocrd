@@ -632,7 +632,7 @@ class ViewPage(View):
         filter_png.set_name("PNG image files")
         filter_png.add_mime_type("image/png")
         dialog.add_filter(filter_png)
-        dialog.set_current_name("untitled.png")
+        dialog.set_current_name(self.current.id + '.png')
 
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
